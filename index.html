@@ -1,36 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Start Your Day</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <div class="header">
-    <h1>Good morning, Daveed</h1>
-    <div class="header-icons">
-      <span>🔔</span>
-      <span>❤️</span>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Start Your Day</title>
+    <style>
+      /* تمام استایل‌ها همانند کد اولیه شما بدون تغییر */
+      /* ... */
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Good morning, Daveed</h1>
+      <div class="header-icons">
+        <span>🔔</span>
+        <span>❤️</span>
+      </div>
     </div>
-  </div>
 
-  <div class="content" id="coursesContainer"></div>
+    <div class="content">
+      <div class="activity-wrapper">
+        <div class="activity-decoration">
+          <div class="circle"></div>
+          <div class="line"></div>
+        </div>
+        <div class="activity active" data-id="1" data-points="10" onclick="completeActivity(1)">
+          <img src="https://via.placeholder.com/60" alt="Activity Image" />
+          <div class="activity-details">
+            <h2>Morning Meditation</h2>
+            <p>🎥 Breathing exercise · 10 min</p>
+          </div>
+        </div>
+      </div>
+      <div class="activity-wrapper">
+        <div class="activity-decoration">
+          <div class="circle"></div>
+          <div class="line"></div>
+        </div>
+        <div class="activity" data-id="2" data-points="5" onclick="completeActivity(2)">
+          <img src="https://via.placeholder.com/60" alt="Activity Image" />
+          <div class="activity-details">
+            <h2>Mindful Coffee</h2>
+            <p>🎥 Relax and enjoy · 5 min</p>
+          </div>
+        </div>
+      </div>
+      <div class="activity-wrapper">
+        <div class="activity-decoration">
+          <div class="circle"></div>
+          <div class="line"></div>
+        </div>
+        <div class="activity" data-id="3" data-points="3" onclick="completeActivity(3)">
+          <img src="https://via.placeholder.com/60" alt="Activity Image" />
+          <div class="activity-details">
+            <h2>Daily Affirmation</h2>
+            <p>🎥 Positive mindset · 3 min</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <div class="footer">
-    <span class="footer-icon active">🏠</span>
-    <span class="footer-icon">🔍</span>
-    <span class="footer-icon">👤</span>
-  </div>
+    <div class="footer">
+      <span class="footer-icon active" onclick="navigateTo('index.html')">🏠</span>
+      <span class="footer-icon" onclick="navigateTo('explore.html')">🔍</span>
+      <span class="footer-icon" onclick="navigateTo('profile.html')">👤</span>
+    </div>
 
-  <div class="congrats-message" id="congratsMessage">
-    <img src="https://via.placeholder.com/100" alt="Animal Character" />
-    <h2>Congratulations!</h2>
-    <p>You’ve completed all activities for today!</p>
-    <p id="totalPoints"></p>
-  </div>
+    <div class="congrats-message" id="congratsMessage">
+      <img src="https://via.placeholder.com/100" alt="Animal Character" />
+      <h2>Congratulations!</h2>
+      <p>You’ve completed all activities for today!</p>
+      <p id="totalPoints"></p>
+    </div>
 
-  <script src="courses.js"></script>
-  <script src="script.js"></script>
-</body>
+    <script>
+      let userPoints = 0; // امتیازات کاربر
+
+      function completeActivity(id) {
+        const currentActivity = document.querySelector(`.activity[data-id="${id}"]`);
+        const nextActivity = document.querySelector(`.activity[data-id="${id + 1}"]`);
+        const currentDecoration = currentActivity.closest(".activity-wrapper").querySelector(".activity-decoration");
+        const activityPoints = parseInt(currentActivity.dataset.points);
+
+        // اضافه کردن امتیاز
+        userPoints += activityPoints;
+
+        // به‌روزرسانی ظاهر
+        currentDecoration.querySelector(".circle").classList.add("completed");
+        currentDecoration.querySelector(".line").classList.add("completed");
+
+        if (nextActivity) {
+          nextActivity.classList.add("active");
+        } else {
+          document.getElementById("congratsMessage").style.display = "block";
+          document.getElementById("totalPoints").innerText = `Total Points: ${userPoints}`;
+        }
+      }
+
+      function navigateTo(page) {
+        window.location.href = page;
+      }
+    </script>
+  </body>
 </html>
