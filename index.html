@@ -5,8 +5,176 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Start Your Day</title>
     <style>
-      /* تمام استایل‌ها همانند کد اولیه شما بدون تغییر */
-      /* ... */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f6f7fb;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        position: relative;
+      }
+
+      .header {
+        padding: 1rem;
+        background-color: white;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .header h1 {
+        font-size: 1.5rem;
+        margin: 0;
+      }
+
+      .header-icons span {
+        font-size: 1.2rem;
+        margin-left: 1rem;
+        cursor: pointer;
+        transition: transform 0.2s ease, color 0.2s ease;
+      }
+
+      .header-icons span:hover {
+        transform: scale(1.1);
+        color: orange;
+      }
+
+      .content {
+        padding: 1rem;
+        flex-grow: 1;
+        padding-bottom: 80px;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .activity-wrapper {
+        display: flex;
+        align-items: center;
+        position: relative;
+      }
+
+      .activity-decoration {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        margin-right: 10px;
+      }
+
+      .circle {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 2px solid gray;
+        background-color: white;
+        margin-bottom: 5px;
+      }
+
+      .circle.completed {
+        background-color: orange;
+      }
+
+      .line {
+        width: 2px;
+        height: 60px;
+        background: repeating-linear-gradient(
+          180deg,
+          gray 0,
+          gray 4px,
+          transparent 4px,
+          transparent 8px
+        );
+      }
+
+      .line.completed {
+        background: orange;
+      }
+
+      .activity {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 0.5rem;
+        opacity: 0.5;
+        pointer-events: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .activity.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .activity img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        margin-right: 10px;
+      }
+
+      .activity-details h2 {
+        margin: 0;
+        font-size: 1rem;
+        color: black;
+      }
+
+      .activity-details p {
+        margin: 0.3rem 0 0 0;
+        font-size: 0.8rem;
+        color: gray;
+      }
+
+      .footer {
+        background-color: white;
+        padding: 1rem;
+        border-top: 1px solid #ddd;
+        display: flex;
+        justify-content: space-around;
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .footer-icon {
+        font-size: 1.5rem;
+        color: gray;
+        cursor: pointer;
+        transition: transform 0.2s ease, color 0.2s ease;
+      }
+
+      .footer-icon:hover {
+        transform: scale(1.1);
+        color: orange;
+      }
+
+      .footer-icon.active {
+        color: black;
+      }
+
+      .congrats-message {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        display: none;
+        z-index: 1000;
+      }
+
+      .congrats-message img {
+        width: 100px;
+        margin-bottom: 1rem;
+      }
     </style>
   </head>
   <body>
@@ -24,7 +192,7 @@
           <div class="circle"></div>
           <div class="line"></div>
         </div>
-        <div class="activity active" data-id="1" data-points="10" onclick="completeActivity(1)">
+        <div class="activity active" data-id="1" onclick="completeActivity(1)">
           <img src="https://via.placeholder.com/60" alt="Activity Image" />
           <div class="activity-details">
             <h2>Morning Meditation</h2>
@@ -37,7 +205,7 @@
           <div class="circle"></div>
           <div class="line"></div>
         </div>
-        <div class="activity" data-id="2" data-points="5" onclick="completeActivity(2)">
+        <div class="activity" data-id="2" onclick="completeActivity(2)">
           <img src="https://via.placeholder.com/60" alt="Activity Image" />
           <div class="activity-details">
             <h2>Mindful Coffee</h2>
@@ -50,7 +218,7 @@
           <div class="circle"></div>
           <div class="line"></div>
         </div>
-        <div class="activity" data-id="3" data-points="3" onclick="completeActivity(3)">
+        <div class="activity" data-id="3" onclick="completeActivity(3)">
           <img src="https://via.placeholder.com/60" alt="Activity Image" />
           <div class="activity-details">
             <h2>Daily Affirmation</h2>
@@ -61,7 +229,9 @@
     </div>
 
     <div class="footer">
-      <span class="footer-icon active" onclick="navigateTo('index.html')">🏠</span>
+      <span class="footer-icon active" onclick="navigateTo('index.html')"
+        >🏠</span
+      >
       <span class="footer-icon" onclick="navigateTo('explore.html')">🔍</span>
       <span class="footer-icon" onclick="navigateTo('profile.html')">👤</span>
     </div>
@@ -70,22 +240,14 @@
       <img src="https://via.placeholder.com/100" alt="Animal Character" />
       <h2>Congratulations!</h2>
       <p>You’ve completed all activities for today!</p>
-      <p id="totalPoints"></p>
     </div>
 
     <script>
-      let userPoints = 0; // امتیازات کاربر
-
       function completeActivity(id) {
         const currentActivity = document.querySelector(`.activity[data-id="${id}"]`);
         const nextActivity = document.querySelector(`.activity[data-id="${id + 1}"]`);
         const currentDecoration = currentActivity.closest(".activity-wrapper").querySelector(".activity-decoration");
-        const activityPoints = parseInt(currentActivity.dataset.points);
 
-        // اضافه کردن امتیاز
-        userPoints += activityPoints;
-
-        // به‌روزرسانی ظاهر
         currentDecoration.querySelector(".circle").classList.add("completed");
         currentDecoration.querySelector(".line").classList.add("completed");
 
@@ -93,7 +255,6 @@
           nextActivity.classList.add("active");
         } else {
           document.getElementById("congratsMessage").style.display = "block";
-          document.getElementById("totalPoints").innerText = `Total Points: ${userPoints}`;
         }
       }
 
