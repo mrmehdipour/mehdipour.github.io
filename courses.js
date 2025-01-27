@@ -12,6 +12,7 @@ const courses = [
         type: "video",
         url: "videos/mindfulness1.mp4",
         order: 1,
+        completed: false,
       },
       {
         id: 2,
@@ -19,6 +20,7 @@ const courses = [
         type: "video",
         url: "videos/mindfulness2.mp4",
         order: 2,
+        completed: false,
       },
     ],
   },
@@ -35,6 +37,7 @@ const courses = [
         type: "video",
         url: "videos/yoga1.mp4",
         order: 1,
+        completed: false,
       },
       {
         id: 2,
@@ -42,6 +45,7 @@ const courses = [
         type: "video",
         url: "videos/yoga2.mp4",
         order: 2,
+        completed: false,
       },
     ],
   },
