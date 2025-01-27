@@ -1,38 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Start Your Day</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
 <body>
-  <div id="coursesContainer"></div>
+  <div class="header">
+    <h1>Good morning, Daveed</h1>
+    <div class="header-icons">
+      <span>🔔</span>
+      <span>❤️</span>
+    </div>
+  </div>
+
+  <div class="content" id="coursesContainer"></div>
+
+  <div class="footer">
+    <span class="footer-icon active">🏠</span>
+    <span class="footer-icon">🔍</span>
+    <span class="footer-icon">👤</span>
+  </div>
+
+  <div class="congrats-message" id="congratsMessage">
+    <img src="https://via.placeholder.com/100" alt="Animal Character" />
+    <h2>Congratulations!</h2>
+    <p>You’ve completed all activities for today!</p>
+    <p id="totalPoints"></p>
+  </div>
 
   <script src="courses.js"></script>
-  <script>
-    const container = document.getElementById("coursesContainer");
-
-    courses.forEach((course) => {
-      const courseDiv = document.createElement("div");
-      courseDiv.classList.add("course");
-
-      courseDiv.innerHTML = `
-        <h2>${course.title}</h2>
-        <p>${course.description}</p>
-        <ul>
-          ${course.content
-            .map(
-              (item) => `
-            <li>
-              <button onclick="playVideo('${item.url}')">
-                ${item.title} (Step ${item.order})
-              </button>
-            </li>
-          `
-            )
-            .join("")}
-        </ul>
-      `;
-
-      container.appendChild(courseDiv);
-    });
-
-    function playVideo(url) {
-      alert(`Playing video: ${url}`);
-      // Implement video player logic here.
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
+</html>
