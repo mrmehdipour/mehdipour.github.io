@@ -27,8 +27,13 @@
       }
 
       .header h1 {
-        font-size: 1.5rem;
+        font-size: 1rem;
         margin: 0;
+      }
+
+      .header .date {
+        font-size: 0.9rem;
+        color: gray;
       }
 
       .header-icons {
@@ -52,6 +57,12 @@
         font-size: 1.2rem;
         font-weight: bold;
         margin-left: 0.5rem;
+      }
+
+      .stars {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-left: 1rem;
       }
 
       .content {
@@ -200,10 +211,14 @@
   </head>
   <body>
     <div class="header">
-      <h1>Good morning, Daveed</h1>
+      <div>
+        <h1>Good morning, Daveed</h1>
+        <div class="date" id="currentDate"></div>
+      </div>
       <div class="header-icons">
         <span>❤️</span>
         <span class="score">0</span>
+        <span class="stars">⭐ 0</span>
       </div>
     </div>
 
@@ -218,7 +233,7 @@
     </div>
 
     <div class="congrats-message" id="congratsMessage">
-      <img src="https://www.beytoote.com/images/stories/fun/cute-photos04-15.jpg" alt="Animal Character" />
+      <img src="https://via.placeholder.com/100" alt="Animal Character" />
       <h2>Congratulations!</h2>
       <p>You’ve completed all activities for today!</p>
     </div>
@@ -238,6 +253,7 @@
       ];
 
       let currentScore = 0;
+      let stars = 0;
 
       function updateScore(points) {
         currentScore += points;
@@ -257,6 +273,8 @@
         if (nextActivity) {
           nextActivity.classList.add("active");
         } else {
+          stars++;
+          document.querySelector(".stars").textContent = `⭐ ${stars}`;
           const congratsMessage = document.getElementById("congratsMessage");
           congratsMessage.style.display = "block";
         }
@@ -284,11 +302,19 @@
         });
       }
 
+      function updateDate() {
+        const dateElement = document.getElementById("currentDate");
+        const today = new Date();
+        const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+        dateElement.textContent = today.toLocaleDateString("fa-IR", options);
+      }
+
       function navigateTo(page) {
         window.location.href = page;
       }
 
       renderActivities();
+      updateDate();
     </script>
   </body>
 </html>
