@@ -1,28 +1,40 @@
 const express = require("express");
 const router = express.Router();
-
-// Mock data
-let activities = [
-  { id: 1, name: "Morning Meditation", description: "Breathing exercise · 10 min", completed: false },
-  { id: 2, name: "Mindful Coffee", description: "Relax and enjoy · 5 min", completed: false },
-  { id: 3, name: "Daily Affirmation", description: "Positive mindset · 3 min", completed: false },
-];
+const Activity = require("../models/activity");
 
 // Get all activities
-router.get("/", (req, res) => {
-  res.json(activities);
+router.get("/", async (req, res) => {
+  try {
+    const activities = await Activity.find();
+    res.json(activities);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
-// Mark an activity as completed
-router.post("/:id/complete", (req, res) => {
-  const id = parseInt(req.params.id);
-  const activity = activities.find((act) => act.id === id);
+// Create a new activity
+router.post("/", async (req, res) => {
+  const { name, description, userId } = req.body;
+  const activity = new Activity({ name, description, userId });
+  try {
+    const newActivity = await activity.save();
+    res.status(201).json(newActivity);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
 
-  if (activity) {
+// Mark activity as completed
+router.post("/:id/complete", async (req, res) => {
+  try {
+    const activity = await Activity.findById(req.params.id);
+    if (!activity) return res.status(404).json({ message: "Activity not found" });
+
     activity.completed = true;
+    await activity.save();
     res.json({ message: "Activity completed", activity });
-  } else {
-    res.status(404).json({ message: "Activity not found" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
