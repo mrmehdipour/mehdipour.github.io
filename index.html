@@ -1,56 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Courses</title>
-  <style>
-    /* اضافه کردن استایل‌ها */
-  </style>
-</head>
-<body>
-  <h1>Available Courses</h1>
-  <div id="courses"></div>
-  <div id="user-points">Your Points: <span id="points">0</span></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Start Your Day</title>
+    <style>
+      /* استایل‌های قبلی اینجا باقی می‌مانند */
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Good morning, Daveed</h1>
+      <div class="header-icons">
+        <span>🔔</span>
+        <span>❤️</span>
+      </div>
+    </div>
 
-  <script>
-    // گرفتن لیست دوره‌ها
-    async function fetchCourses() {
-      const response = await fetch("/api/courses");
-      const courses = await response.json();
-      renderCourses(courses);
-    }
+    <div class="content">
+      <h2>Your Courses</h2>
+      <div id="course-list">
+        <!-- لیست دوره‌ها اینجا اضافه می‌شود -->
+      </div>
+    </div>
 
-    // نمایش لیست دوره‌ها
-    function renderCourses(courses) {
-      const container = document.getElementById("courses");
-      container.innerHTML = "";
-      courses.forEach((course) => {
-        const courseDiv = document.createElement("div");
-        courseDiv.textContent = `${course.title} - ${course.points} Points`;
-        courseDiv.onclick = () => completeCourse(course._id);
-        container.appendChild(courseDiv);
-      });
-    }
+    <div class="footer">
+      <span class="footer-icon active" onclick="navigateTo('index.html')">🏠</span>
+      <span class="footer-icon" onclick="navigateTo('explore.html')">🔍</span>
+      <span class="footer-icon" onclick="navigateTo('profile.html')">👤</span>
+    </div>
 
-    // تکمیل دوره
-    async function completeCourse(courseId) {
-      const userId = "USER_ID"; // شناسه کاربر
-      const response = await fetch(`/api/courses/${courseId}/complete`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId }),
-      });
-      const data = await response.json();
-      if (response.ok) {
-        document.getElementById("points").textContent = data.points;
-        fetchCourses();
-      } else {
-        alert(data.message);
+    <script>
+      // نمایش لیست دوره‌ها
+      async function fetchCourses() {
+        const response = await fetch("/api/courses");
+        const courses = await response.json();
+        renderCourses(courses);
       }
-    }
 
-    fetchCourses();
-  </script>
-</body>
+      // ایجاد نمایش برای هر دوره
+      function renderCourses(courses) {
+        const courseList = document.getElementById("course-list");
+        courseList.innerHTML = "";
+
+        courses.forEach((course) => {
+          const courseDiv = document.createElement("div");
+          courseDiv.classList.add("activity", "active");
+          courseDiv.dataset.id = course._id;
+
+          courseDiv.innerHTML = `
+            <img src="https://via.placeholder.com/60" alt="${course.title}" />
+            <div class="activity-details">
+              <h2>${course.title}</h2>
+              <p>${course.topic} - ${course.points} Points</p>
+            </div>
+          `;
+
+          // رویداد کلیک
+          courseDiv.onclick = () => completeCourse(course._id, course.prerequisites);
+
+          courseList.appendChild(courseDiv);
+        });
+      }
+
+      // تکمیل دوره
+      async function completeCourse(courseId, prerequisites) {
+        const userId = "USER_ID"; // شناسه کاربر
+        const response = await fetch(`/api/courses/${courseId}/complete`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId }),
+        });
+        const data = await response.json();
+
+        if (response.ok) {
+          alert(`Congratulations! You earned ${data.points} points!`);
+          fetchCourses(); // به‌روزرسانی دوره‌ها
+        } else {
+          alert(data.message); // پیام خطا (مثل پیش‌نیاز تکمیل نشده)
+        }
+      }
+
+      fetchCourses();
+    </script>
+  </body>
 </html>
