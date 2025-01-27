@@ -31,6 +31,11 @@
         margin: 0;
       }
 
+      .header-icons {
+        display: flex;
+        align-items: center;
+      }
+
       .header-icons span {
         font-size: 1.2rem;
         margin-left: 1rem;
@@ -41,6 +46,12 @@
       .header-icons span:hover {
         transform: scale(1.1);
         color: orange;
+      }
+
+      .score {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-left: 0.5rem;
       }
 
       .content {
@@ -161,7 +172,7 @@
         position: fixed;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%) scale(0);
         background: white;
         padding: 2rem;
         border-radius: 12px;
@@ -169,11 +180,21 @@
         text-align: center;
         display: none;
         z-index: 1000;
+        animation: zoomIn 0.5s ease forwards;
       }
 
       .congrats-message img {
         width: 100px;
         margin-bottom: 1rem;
+      }
+
+      @keyframes zoomIn {
+        from {
+          transform: translate(-50%, -50%) scale(0);
+        }
+        to {
+          transform: translate(-50%, -50%) scale(1);
+        }
       }
     </style>
   </head>
@@ -181,57 +202,17 @@
     <div class="header">
       <h1>Good morning, Daveed</h1>
       <div class="header-icons">
-        <span>🔔</span>
         <span>❤️</span>
+        <span class="score">0</span>
       </div>
     </div>
 
     <div class="content">
-      <div class="activity-wrapper">
-        <div class="activity-decoration">
-          <div class="circle"></div>
-          <div class="line"></div>
-        </div>
-        <div class="activity active" data-id="1" onclick="completeActivity(1)">
-          <img src="https://via.placeholder.com/60" alt="Activity Image" />
-          <div class="activity-details">
-            <h2>Morning Meditation</h2>
-            <p>🎥 Breathing exercise · 10 min</p>
-          </div>
-        </div>
-      </div>
-      <div class="activity-wrapper">
-        <div class="activity-decoration">
-          <div class="circle"></div>
-          <div class="line"></div>
-        </div>
-        <div class="activity" data-id="2" onclick="completeActivity(2)">
-          <img src="https://via.placeholder.com/60" alt="Activity Image" />
-          <div class="activity-details">
-            <h2>Mindful Coffee</h2>
-            <p>🎥 Relax and enjoy · 5 min</p>
-          </div>
-        </div>
-      </div>
-      <div class="activity-wrapper">
-        <div class="activity-decoration">
-          <div class="circle"></div>
-          <div class="line"></div>
-        </div>
-        <div class="activity" data-id="3" onclick="completeActivity(3)">
-          <img src="https://via.placeholder.com/60" alt="Activity Image" />
-          <div class="activity-details">
-            <h2>Daily Affirmation</h2>
-            <p>🎥 Positive mindset · 3 min</p>
-          </div>
-        </div>
-      </div>
+      <!-- Activities dynamically generated -->
     </div>
 
     <div class="footer">
-      <span class="footer-icon active" onclick="navigateTo('index.html')"
-        >🏠</span
-      >
+      <span class="footer-icon active" onclick="navigateTo('index.html')">🏠</span>
       <span class="footer-icon" onclick="navigateTo('explore.html')">🔍</span>
       <span class="footer-icon" onclick="navigateTo('profile.html')">👤</span>
     </div>
@@ -243,6 +224,26 @@
     </div>
 
     <script>
+      const activities = [
+        { id: 1, title: "Morning Meditation", description: "🎥 Breathing exercise · 10 min", points: 10 },
+        { id: 2, title: "Mindful Coffee", description: "🎥 Relax and enjoy · 5 min", points: 5 },
+        { id: 3, title: "Daily Affirmation", description: "🎥 Positive mindset · 3 min", points: 3 },
+        { id: 4, title: "Stretching Routine", description: "🎥 Full body · 15 min", points: 8 },
+        { id: 5, title: "Gratitude Journal", description: "📘 Reflect and write · 10 min", points: 7 },
+        { id: 6, title: "Healthy Breakfast", description: "🍳 Prepare and enjoy · 20 min", points: 12 },
+        { id: 7, title: "Reading Time", description: "📖 Personal growth · 20 min", points: 10 },
+        { id: 8, title: "Nature Walk", description: "🌳 Fresh air · 30 min", points: 15 },
+        { id: 9, title: "Creative Writing", description: "✍️ Free expression · 20 min", points: 8 },
+        { id: 10, title: "Evening Reflection", description: "🕯️ Reflect on the day · 10 min", points: 10 },
+      ];
+
+      let currentScore = 0;
+
+      function updateScore(points) {
+        currentScore += points;
+        document.querySelector(".score").textContent = currentScore;
+      }
+
       function completeActivity(id) {
         const currentActivity = document.querySelector(`.activity[data-id="${id}"]`);
         const nextActivity = document.querySelector(`.activity[data-id="${id + 1}"]`);
@@ -251,16 +252,43 @@
         currentDecoration.querySelector(".circle").classList.add("completed");
         currentDecoration.querySelector(".line").classList.add("completed");
 
+        updateScore(activities.find((activity) => activity.id === id).points);
+
         if (nextActivity) {
           nextActivity.classList.add("active");
         } else {
-          document.getElementById("congratsMessage").style.display = "block";
+          const congratsMessage = document.getElementById("congratsMessage");
+          congratsMessage.style.display = "block";
         }
+      }
+
+      function renderActivities() {
+        const content = document.querySelector(".content");
+        activities.forEach((activity, index) => {
+          const isActive = index === 0 ? "active" : "";
+          content.innerHTML += `
+            <div class="activity-wrapper">
+              <div class="activity-decoration">
+                <div class="circle"></div>
+                <div class="line"></div>
+              </div>
+              <div class="activity ${isActive}" data-id="${activity.id}" onclick="completeActivity(${activity.id})">
+                <img src="https://via.placeholder.com/60" alt="Activity Image" />
+                <div class="activity-details">
+                  <h2>${activity.title}</h2>
+                  <p>${activity.description}</p>
+                </div>
+              </div>
+            </div>
+          `;
+        });
       }
 
       function navigateTo(page) {
         window.location.href = page;
       }
+
+      renderActivities();
     </script>
   </body>
 </html>
