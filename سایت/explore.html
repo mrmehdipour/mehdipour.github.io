@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>اکسپلور</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f6f7fb;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      .header {
+        padding: 1rem;
+        background-color: white;
+        border-bottom: 1px solid #ddd;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .header h1 {
+        font-size: 1.5rem;
+        margin: 0;
+      }
+
+      .content {
+        padding: 1rem;
+        flex-grow: 1;
+        padding-bottom: 80px; /* فضای کافی برای فوتر */
+      }
+
+      .categories {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+
+      .category {
+        background-color: white;
+        border-radius: 12px;
+        padding: 1rem;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        cursor: pointer;
+      }
+
+      .category:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      }
+
+      .category img {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 0.5rem;
+        transition: transform 0.2s ease;
+      }
+
+      .category:hover img {
+        transform: scale(1.1);
+      }
+
+      .course {
+        background-color: white;
+        border-radius: 12px;
+        padding: 1rem;
+        display: flex;
+        gap: 1rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin-top: 2rem;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        cursor: pointer;
+      }
+
+      .course:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      }
+
+      .course img {
+        width: 60px;
+        height: 60px;
+        border-radius: 10px;
+      }
+
+      .course-details h2 {
+        margin: 0;
+        font-size: 1rem;
+      }
+
+      .course-details p {
+        margin: 0.5rem 0 0 0;
+        font-size: 0.9rem;
+        color: gray;
+      }
+
+      .footer {
+        background-color: white;
+        padding: 1rem;
+        border-top: 1px solid #ddd;
+        display: flex;
+        justify-content: space-around;
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .footer-icon {
+        font-size: 1.5rem;
+        color: gray;
+        cursor: pointer;
+        transition: transform 0.2s ease, color 0.2s ease;
+      }
+
+      .footer-icon:hover {
+        transform: scale(1.1);
+        color: orange;
+      }
+
+      .footer-icon.active {
+        color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>اکسپلور</h1>
+    </div>
+
+    <div class="content">
+      <div class="categories">
+        <div class="category" onclick="navigateTo('meditation.html')">
+          <img src="https://via.placeholder.com/50" alt="Meditation" />
+          <h3>مدیتیشن</h3>
+        </div>
+        <div class="category" onclick="navigateTo('mindfulness.html')">
+          <img src="https://via.placeholder.com/50" alt="Mindfulness" />
+          <h3>آگاهی ذهنی</h3>
+        </div>
+        <div class="category" onclick="navigateTo('sleep.html')">
+          <img src="https://via.placeholder.com/50" alt="Sleep" />
+          <h3>خواب</h3>
+        </div>
+        <div class="category" onclick="navigateTo('focus.html')">
+          <img src="https://via.placeholder.com/50" alt="Focus" />
+          <h3>تمرکز</h3>
+        </div>
+      </div>
+
+      <div class="course" onclick="navigateTo('course.html')">
+        <img src="https://via.placeholder.com/60" alt="Course Thumbnail" />
+        <div class="course-details">
+          <h2>ساخت عادات روزانه</h2>
+          <p>🎥 10 جلسه · شروع کنید</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span class="footer-icon" onclick="navigateTo('index.html')">🏠</span>
+      <span class="footer-icon active" onclick="navigateTo('explore.html')">🔍</span>
+      <span class="footer-icon" onclick="navigateTo('profile.html')">👤</span>
+    </div>
+
+    <script>
+      function navigateTo(page) {
+        window.location.href = page;
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>شبکه اجتماعی</title>
+    <style>
+      body {
+        font-family: 'Tahoma', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f6f7fb;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        direction: rtl;
+      }
+
+      .header {
+        padding: 1rem;
+        background-color: #ffffff;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .header h1 {
+        font-size: 1.5rem;
+        margin: 0;
+        color: #00796b;
+      }
+
+      .tabs {
+        display: flex;
+        justify-content: space-around;
+        background-color: white;
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .tab {
+        padding: 1rem;
+        cursor: pointer;
+        text-align: center;
+        width: 50%;
+        background-color: #f0f0f0;
+        transition: background-color 0.3s ease;
+        color: #00796b;
+      }
+
+      .tab:hover {
+        background-color: #00796b;
+        color: white;
+      }
+
+      .tab.active {
+        background-color: #00796b;
+        color: white;
+      }
+
+      .content {
+        padding: 2rem;
+        flex-grow: 1;
+        background-color: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        margin: 1rem;
+      }
+
+      .league table, .group-chat ul {
+        width: 100%;
+        margin-top: 1rem;
+      }
+
+      .league table th, .group-chat ul li {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: center;
+      }
+
+      .league table th {
+        background-color: #f0f0f0;
+        color: #00796b;
+      }
+
+      .group-chat ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .group-chat ul li {
+        background-color: #f9f9f9;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        padding: 10px;
+      }
+
+      .group-chat ul li .message {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .group-chat ul li .message .username {
+        font-weight: bold;
+      }
+
+      .footer {
+        background-color: #ffffff;
+        padding: 1rem;
+        border-top: 1px solid #ddd;
+        display: flex;
+        justify-content: space-around;
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .footer-icon {
+        font-size: 2rem;
+        color: #00796b;
+        cursor: pointer;
+        transition: transform 0.3s ease, color 0.3s ease;
+      }
+
+      .footer-icon:hover {
+        transform: scale(1.1);
+        color: #004d40;
+      }
+
+      .footer-icon.active {
+        color: #004d40;
+      }
+
+      .congrats-message {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        background: #ffffff;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        display: none;
+        z-index: 1000;
+        animation: zoomIn 0.5s ease forwards;
+      }
+
+      .congrats-message img {
+        width: 100px;
+        margin-bottom: 1rem;
+      }
+
+      @keyframes zoomIn {
+        from {
+          transform: translate(-50%, -50%) scale(0);
+        }
+        to {
+          transform: translate(-50%, -50%) scale(1);
+        }
+      }
+
+      .activity.disabled {
+        opacity: 0.3;
+        pointer-events: none;
+      }
+
+      .activity.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>شبکه اجتماعی</h1>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" id="leagueTab" onclick="changeTab('league')">لیگ</div>
+      <div class="tab" id="groupChatTab" onclick="changeTab('groupChat')">ارتباط درون گروهی</div>
+    </div>
+
+    <div class="content">
+      <!-- لیگ -->
+      <div class="league active" id="leagueContent">
+        <h2>رتبه‌بندی لیگ</h2>
+        <table>
+          <tr>
+            <th>رتبه</th>
+            <th>نام</th>
+            <th>امتیاز</th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>داوید</td>
+            <td>1000</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>علی</td>
+            <td>850</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>سمیرا</td>
+            <td>700</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- ارتباط درون گروهی -->
+      <div class="group-chat" id="groupChatContent">
+        <h2>گفتگوهای گروهی</h2>
+        <ul>
+          <li>
+            <div class="message">
+              <span class="username">داوید:</span>
+              <span>سلام، کسی برای پیاده‌روی امروز وقت داره؟</span>
+            </div>
+          </li>
+          <li>
+            <div class="message">
+              <span class="username">علی:</span>
+              <span>سلام داوید، من می‌توانم ساعت 5 عصر باشم.</span>
+            </div>
+          </li>
+          <li>
+            <div class="message">
+              <span class="username">سمیرا:</span>
+              <span>من هم هستم! بریم!</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span class="footer-icon active" onclick="navigateTo('index.html')">🏠</span>
+      <span class="footer-icon" onclick="navigateTo('groups.html')">👥</span>
+      <span class="footer-icon" onclick="navigateTo('explore.html')">📚</span>
+      <span class="footer-icon" onclick="navigateTo('profile.html')">👤</span>
+    </div>
+
+    <script>
+      function changeTab(tab) {
+        // مخفی کردن محتواهای هر تب
+        document.querySelector('.league').classList.remove('active');
+        document.querySelector('.group-chat').classList.remove('active');
+        // حذف کردن کلاس active از تب‌ها
+        document.querySelector('#leagueTab').classList.remove('active');
+        document.querySelector('#groupChatTab').classList.remove('active');
+        
+        // نمایش محتوای انتخابی
+        if (tab === 'league') {
+          document.querySelector('#leagueContent').classList.add('active');
+          document.querySelector('#leagueTab').classList.add('active');
+        } else if (tab === 'groupChat') {
+          document.querySelector('#groupChatContent').classList.add('active');
+          document.querySelector('#groupChatTab').classList.add('active');
+        }
+      }
+
+      function navigateTo(page) {
+        window.location.href = page;
+      }
+    </script>
+  </body>
+</html>

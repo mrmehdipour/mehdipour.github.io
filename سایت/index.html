@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>شروع روزتان</title>
+    <style>
+      body {
+        font-family: 'Tahoma', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f6f7fb;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        position: relative;
+        direction: rtl;
+      }
+
+      .header {
+        padding: 1rem;
+        background-color: white;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .header h1 {
+        font-size: 1rem;
+        margin: 0;
+        text-align: right;
+      }
+
+      .header .date {
+        font-size: 0.9rem;
+        color: gray;
+        text-align: right;
+      }
+
+      .header-icons {
+        display: flex;
+        align-items: center;
+      }
+
+      .header-icons span {
+        font-size: 1.2rem;
+        margin-left: 1rem;
+        cursor: pointer;
+        transition: transform 0.2s ease, color 0.2s ease;
+      }
+
+      .header-icons span:hover {
+        transform: scale(1.1);
+        color: orange;
+      }
+
+      .score {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-left: 0.5rem;
+      }
+
+      .stars {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-left: 1rem;
+      }
+
+      .content {
+        padding: 1rem;
+        flex-grow: 1;
+        padding-bottom: 80px;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .activity-wrapper {
+        display: flex;
+        align-items: center;
+        position: relative;
+      }
+
+      .activity-decoration {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        margin-left: 10px;
+      }
+
+      .circle {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 2px solid gray;
+        background-color: white;
+        margin-bottom: 5px;
+      }
+
+      .circle.completed {
+        background-color: orange;
+      }
+
+      .line {
+        width: 2px;
+        height: 60px;
+        background: repeating-linear-gradient(
+          180deg,
+          gray 0,
+          gray 4px,
+          transparent 4px,
+          transparent 8px
+        );
+      }
+
+      .line.completed {
+        background: orange;
+      }
+
+      .activity {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 0.5rem;
+        opacity: 0.5;
+        pointer-events: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .activity.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .activity img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        margin-left: 10px;
+      }
+
+      .activity-details h2 {
+        margin: 0;
+        font-size: 1rem;
+        color: black;
+        text-align: right;
+      }
+
+      .activity-details p {
+        margin: 0.3rem 0 0 0;
+        font-size: 0.8rem;
+        color: gray;
+        text-align: right;
+      }
+
+      .footer {
+        background-color: white;
+        padding: 1rem;
+        border-top: 1px solid #ddd;
+        display: flex;
+        justify-content: space-between;
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .footer-icon {
+        font-size: 1.5rem;
+        color: gray;
+        cursor: pointer;
+        transition: transform 0.2s ease, color 0.2s ease;
+      }
+
+      .footer-icon:hover {
+        transform: scale(1.1);
+        color: orange;
+      }
+
+      .footer-icon.active {
+        color: black;
+      }
+
+      .congrats-message {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        display: none;
+        z-index: 1000;
+        animation: zoomIn 0.5s ease forwards;
+      }
+
+      .congrats-message img {
+        width: 100px;
+        margin-bottom: 1rem;
+      }
+
+      @keyframes zoomIn {
+        from {
+          transform: translate(-50%, -50%) scale(0);
+        }
+        to {
+          transform: translate(-50%, -50%) scale(1);
+        }
+      }
+
+      .activity.disabled {
+        opacity: 0.3;
+        pointer-events: none;
+      }
+
+      .activity.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div>
+        <h1>صبح بخیر، داوید</h1>
+        <div class="date" id="currentDate"></div>
+      </div>
+      <div class="header-icons">
+        <span>❤️</span>
+        <span class="score">0</span>
+        <span class="stars">⭐ 0</span>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- Activities dynamically generated -->
+    </div>
+
+    <div class="footer">
+      <span class="footer-icon active" onclick="navigateTo('index.html')">🏠</span>
+      <span class="footer-icon" onclick="navigateTo('groups.html')">👥</span> <!-- New page for Social Groups -->
+      <span class="footer-icon" onclick="navigateTo('explore.html')">📚</span> <!-- New page for Explore (Education) -->
+      <span class="footer-icon" onclick="navigateTo('profile.html')">👤</span>
+    </div>
+
+    <div class="congrats-message" id="congratsMessage">
+      <img src="https://c8.alamy.com/comp/2EA2PAC/colorful-cute-vector-hippopotamus-face-one-object-on-a-white-background-cartoon-flat-illustration-emoji-funny-animal-embarrassed-smile-emotion-2EA2PAC.jpg" alt="Animal Character" />
+      <h2>تبریک می‌گوییم!</h2>
+      <p>شما تمامی فعالیت‌ها را برای امروز کامل کردید!</p>
+    </div>
+
+    <script>
+      const activities = [
+        { id: 1, title: "مدیتیشن صبحگاهی", description: "🎥 تمرین تنفس · 10 دقیقه", points: 10, challenge: "چالش امروز: تمرکز کامل روی نفس کشیدن" },
+        { id: 2, title: "قهوه با ذهن آرام", description: "🎥 استراحت و لذت بردن · 5 دقیقه", points: 5, challenge: "چالش امروز: هیچ چیز را انجام ندهید و فقط از قهوه لذت ببرید!" },
+        { id: 3, title: "تأکیدات روزانه", description: "🎥 ذهنیت مثبت · 3 دقیقه", points: 3, challenge: "چالش امروز: تأکیدات مثبت را با خود تکرار کنید" },
+        { id: 4, title: "تمرین کششی", description: "🎥 تمام بدن · 15 دقیقه", points: 8, challenge: "چالش امروز: کشش بدن را با تمرکز انجام دهید" },
+        { id: 5, title: "دفترچه قدردانی", description: "📘 تأمل و نوشتن · 10 دقیقه", points: 7, challenge: "چالش امروز: 3 چیزی که برای آن‌ها سپاسگزارید بنویسید" },
+        { id: 6, title: "صبحانه سالم", description: "🍳 آماده‌سازی و لذت بردن · 20 دقیقه", points: 12, challenge: "چالش امروز: صبحانه‌ای سالم تهیه کنید" },
+        { id: 7, title: "زمان مطالعه", description: "📖 رشد شخصی · 20 دقیقه", points: 10, challenge: "چالش امروز: مطالعه در یک محیط آرام" },
+        { id: 8, title: "پیاده‌روی در طبیعت", description: "🌳 هوای تازه · 30 دقیقه", points: 15, challenge: "چالش امروز: در طبیعت پیاده‌روی کنید و به محیط اطراف توجه کنید" },
+        { id: 9, title: "نوشتن خلاقانه", description: "✍️ بیان آزاد · 20 دقیقه", points: 8, challenge: "چالش امروز: نوشتن داستان کوتاه" },
+        { id: 10, title: "تفکر شبانه", description: "🕯️ تأمل بر روز · 10 دقیقه", points: 10, challenge: "چالش امروز: روی روز خود تأمل کنید و برنامه‌ریزی برای فردا بنویسید" },
+      ];
+
+      let currentScore = 0;
+      let stars = 0;
+
+      function updateScore(points) {
+        currentScore += points;
+        document.querySelector(".score").textContent = currentScore;
+      }
+
+      function completeActivity(id) {
+        const currentActivity = document.querySelector(`.activity[data-id="${id}"]`);
+        const nextActivity = document.querySelector(`.activity[data-id="${id + 1}"]`);
+        const currentDecoration = currentActivity.closest(".activity-wrapper").querySelector(".activity-decoration");
+
+        currentDecoration.querySelector(".circle").classList.add("completed");
+        currentDecoration.querySelector(".line").classList.add("completed");
+
+        updateScore(activities.find((activity) => activity.id === id).points);
+
+        if (nextActivity) {
+          nextActivity.classList.add("active");
+        } else {
+          stars++;
+          document.querySelector(".stars").textContent = `⭐ ${stars}`;
+          const congratsMessage = document.getElementById("congratsMessage");
+          congratsMessage.style.display = "block";
+        }
+      }
+
+      function renderActivities() {
+        const content = document.querySelector(".content");
+        activities.forEach((activity, index) => {
+          const isActive = index === 0 ? "active" : "";
+          const isDisabled = index !== 0 ? "disabled" : "";
+
+          content.innerHTML += `
+            <div class="activity-wrapper">
+              <div class="activity-decoration">
+                <div class="circle"></div>
+                <div class="line"></div>
+              </div>
+              <div class="activity ${isActive} ${isDisabled}" data-id="${activity.id}" onclick="completeActivity(${activity.id})">
+                <img src="https://c8.alamy.com/comp/2EA2PAC/colorful-cute-vector-hippopotamus-face-one-object-on-a-white-background-cartoon-flat-illustration-emoji-funny-animal-embarrassed-smile-emotion-2EA2PAC.jpg" alt="Activity Image" />
+                <div class="activity-details">
+                  <h2>${activity.title}</h2>
+                  <p>${activity.description}</p>
+                  <p><strong>چالش: </strong>${activity.challenge}</p>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      function updateDate() {
+        const dateElement = document.getElementById("currentDate");
+        const today = new Date();
+        const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+        dateElement.textContent = today.toLocaleDateString("fa-IR", options);
+      }
+
+      function navigateTo(page) {
+        window.location.href = page;
+      }
+
+      renderActivities();
+      updateDate();
+    </script>
+  </body>
+</html>
